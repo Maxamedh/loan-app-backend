@@ -28,18 +28,25 @@ app.get('/', (req, res) => {
 // Database Connection and Server Start
 const startServer = async () => {
     try {
+        console.log('--- Server Starting ---');
+        console.log('Environment:', process.env.NODE_ENV);
+        console.log('Port Configured:', PORT);
+
+        console.log('Attempting to connect to database...');
         await sequelize.authenticate();
         console.log('Database connected successfully.');
 
-        // Sync models (force: false means it won't drop tables if they exist)
         await sequelize.sync({ force: false });
         console.log('Database synced.');
-        // test
-        app.listen(PORT, () => {
+
+        app.listen(PORT, '0.0.0.0', () => {
             console.log(`Server is running on port ${PORT}`);
+            console.log('API is ready to receive requests');
         });
     } catch (error) {
-        console.error('Unable to connect to the database:', error);
+        console.error('FATAL ERROR during startup:', error);
+        // Exit so Railway knows to restart the container
+        process.exit(1);
     }
 };
 
