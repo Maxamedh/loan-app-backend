@@ -34,7 +34,7 @@ const startServer = async () => {
         // Sync models (force: false means it won't drop tables if they exist)
         await sequelize.sync({ force: false });
         console.log('Database synced.');
-
+        // test
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
